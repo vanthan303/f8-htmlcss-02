@@ -1,0 +1,782 @@
+* {
+    /* thuộc tính này dùng để set các box luôn đó kích thước chính xác khi thiết lập weight, height
+        kể cả khi có các thuộc tính padding, border và nội dung bên trong box đó
+        thì kích thước weight, height sẽ không bị thay đổi
+    */
+    box-sizing: border-box;
+}
+
+/* Nơi tạo các biến môi trường dùng chung cho những phần sau */
+:root {
+    --primary-color: #ffb900;
+
+    /* Tạo biến --font-heading chứa giá trị font chữ */
+    --font-heading: Sen, sans-serif;
+}
+
+html {
+    /* mặc định trình duyệt 16px để set cho font-size là 10px thì có công thức sau: 
+     10 / 16 = 0.625 | 0.625 * 100 = 62.5% (62.5% tương đương là 10px)
+     */
+    font-size: 62.5%;
+}
+
+body {
+    /* lúc này 1rem = 10px (vì ảnh hưởng bởi font-size ở trên) 
+     Nên để có 16px khi đổi qua rem thì lấy công thức 16 / 10 = 1.6 (1.6rem = 16px)
+    */
+    font-size: 1.6rem;
+    font-family: "Poppins", sans-serif;
+}
+
+/* Common - Các thành phần dùng chung */
+a {
+    text-decoration: none;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0 16px;
+    min-width: 118px;
+    line-height: 50px;
+    font-size: 1.6rem;
+    font-weight: 600;
+    text-align: center;
+    color: #ffffff;
+    border-radius: 999px;
+    background: #171100;
+}
+
+.btn:hover {
+    opacity: 0.9;
+    cursor: pointer;
+}
+
+.heading {
+    /* gọi biến var(--font-heading) để sử dụng */
+    font-family: var(--font-heading);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #171100;
+}
+
+.heading.lv1 {
+    font-size: 5.8rem;
+    line-height: 1.17;
+}
+
+.heading.lv2 {
+    font-size: 3.8rem;
+    line-height: 1.26;
+}
+
+.main-content {
+    width: 1170px;
+    max-width: calc(
+        100% - 48px
+    ); /* Khi kích thước màn hình < 1170px thì sẽ chạy dòng max-width (48px là 2 bên trái phải mỗi bên 24px) */
+    margin: 0px auto; /* Căn phần tử nằm giữa */
+}
+
+/* CSS xử lý cho phần nội dung quá dài hơn 1 dòng thì thêm dấu ... 
+    tag html nào cần xử dụng thì thêm class="line-clamp"
+    --line-clamp : tên biến
+    1 : là giá trị của --line-clamp (1 dòng)
+*/
+.line-clamp {
+    display: -webkit-box;
+    -webkit-line-clamp: var(--line-clamp, 1);
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.line-clamp.line-2 {
+    --line-clamp: 2;
+    /* xử lý cho phần nội dung nếu hơn 2 dòng thì thêm dấu ... kết hợp với class .line-clamp
+    sử dụng cùng lúc 2 class="line-clamp line-2" ở thẻ tag html cần dùng để hiển thị
+    */
+}
+
+.line-clamp.line-3 {
+    --line-clamp: 3;
+    /* xử lý cho phần nội dung nếu hơn 3 dòng thì thêm dấu ... kết hợp với class .line-clamp
+    sử dụng cùng lúc 3 class="line-clamp line-2" ở thẻ tag html cần dùng để hiển thị
+    */
+}
+
+/* CSS xử lý cho phần tiêu đề hoặc nội dung viết LIỀN không cách ra thì sẽ tự bẻ xuống dòng để tránh bị bể giao diện
+    thêm class="break-all" ở tag html nào cần sử dụng 
+*/
+.break-all {
+    word-break: break-all;
+}
+
+/* End Common */
+
+/* Header */
+.header {
+    background-color: #fffcf4;
+}
+
+.header.fixed {
+    /* làm thanh menu cuộn theo khi cuộn trình duyệt */
+    position: sticky;
+    top: -28px; /* 28px: 36px - 8px = 28px : khi khoảng cách bên trên còn 8px thì neo thanh cuộn lại */
+    z-index: 1;
+}
+
+.header .body {
+    display: flex;
+    align-items: center;
+    padding: 36px 0 8px;
+}
+
+.nav {
+    margin-left: auto;
+}
+
+.nav ul {
+    display: flex;
+}
+
+.nav a {
+    position: relative;
+    padding: 8px 21px; /* sử dụng padding ở đây để tăng kích thước vùng bấm khi click menu dễ dàng hơn */
+    color: #5f5b53;
+    font-size: 1.6rem;
+}
+
+.nav a:hover,
+.nav li.active a {
+    text-shadow: 1px 0 0 currentColor; /* currentColor: lấy màu hiện tại của phần tử đó nếu có, nếu ko có sẽ lấy màu ở phần tử cha */
+    color: #171100;
+}
+
+/* tạo ra gạch bên dưới menu */
+.nav li.active a::after {
+    position: absolute;
+    left: 21px;
+    bottom: 6px;
+    content: "";
+    display: block;
+    width: 12px;
+    height: 2px;
+    background: #171100;
+    border-radius: 1px;
+}
+
+.header .sign-up-btn {
+    min-width: 144px;
+}
+
+.header .action {
+    margin-left: 49px;
+}
+
+/* Hero */
+.hero {
+    padding: 56px 0 65px 0;
+    background: #fffcf4;
+}
+
+.hero .body {
+    display: flex;
+}
+
+/* Hero Left */
+.hero .media-block {
+    position: relative;
+    width: 48%;
+}
+
+.hero .media-block .img {
+    width: 470px;
+    height: 685px;
+    object-fit: cover;
+    border-radius: 20px;
+    display: block;
+}
+
+.hero .hero-summary {
+    position: absolute;
+    right: 0;
+    bottom: 48px;
+    width: 270px;
+    padding: 24px;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0px 16px 32px 0px rgba(0, 0, 0, 0.05);
+}
+
+.hero-summary .item {
+    display: flex;
+    align-items: center;
+}
+
+/* áp dụng cho item thứ 2 trở đi thì mới áp dụng thuộc tính này */
+.hero-summary .item + .item {
+    margin-top: 22px;
+}
+
+.hero-summary .icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff9e8;
+}
+
+/* nth-of-type(2) : chọn phần tử thứ 2 để áp dụng thuộc tính css này */
+.hero-summary .item:nth-of-type(2) .icon {
+    background: #fcefff;
+}
+
+/* nth-of-type(3) : chọn phần tử thứ 3 để áp dụng thuộc tính css này */
+.hero-summary .item:nth-of-type(3) .icon {
+    background: #ebeaff;
+}
+
+.hero-summary .info {
+    margin-left: 16px;
+}
+
+.hero-summary .label {
+    font-size: 1.4rem;
+    line-height: 1.86;
+    color: #5f5b53;
+}
+
+.hero-summary .title {
+    color: #171100;
+    font-size: 1.8rem;
+    font-weight: 600;
+    line-height: 1.67;
+}
+
+/* Hero right */
+.hero .content-block {
+    width: 52%;
+    padding: 64px 0 0 130px;
+}
+
+.hero .desc {
+    margin-top: 22px;
+    color: #5f5b53;
+    font-size: 1.8rem;
+    line-height: 1.67; /* lấy gtri px của line-height (30px) / gtri px font-size (18px) = 1.66 (làm tròn 1.67) */
+}
+
+.hero .cta-group {
+    display: flex;
+    align-items: center;
+    margin: 38px 0 48px;
+}
+
+.hero .hero-cta {
+    min-width: 180px;
+    line-height: 64px;
+    background: var(--primary-color);
+}
+
+.hero .watch-video {
+    display: flex;
+    align-items: center;
+    margin-left: 28px;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.hero .watch-video .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.07);
+}
+
+.hero .watch-video span {
+    margin-left: 14px;
+    font-weight: 600;
+    color: #171100;
+    font-size: 1.8rem;
+    line-height: 1.67;
+}
+
+.hero .stats {
+    margin: 8px 0 0 -28px;
+}
+
+.hero .stats strong {
+    padding: 0 8px 0 28px;
+    font-family: var(--font-heading);
+    font-size: 4.4rem;
+    font-weight: 700;
+    line-height: 1.23;
+    color: #171100;
+}
+
+/* Popular */
+.popular {
+    padding: 65px 0;
+    margin-top: 135px;
+}
+
+.popular-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.popular-top .desc {
+    margin-top: 16px;
+    width: 458px;
+    font-size: 1.8rem;
+    line-height: 1.67;
+    color: #5f5b53;
+}
+
+.popular-top .controls {
+    display: flex;
+    gap: 18px; /* khoảng cách giữa các icon */
+}
+
+.popular-top .control-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    background: transparent;
+}
+
+.popular-top .control-btn:hover {
+    color: #fff;
+    background: var(--primary-color);
+    cursor: pointer;
+}
+
+.popular .course-list {
+    display: flex;
+    gap: 30px; /* khoảng cách giữa các item */
+    margin-top: 55px;
+}
+
+.popular .course-item {
+    flex: 1; /* set cho 3 item có kích thước bằng nhau */
+    border-radius: 12px;
+    border: 1px solid #e2dfda;
+    background: #fff;
+}
+
+.popular .course-item:hover {
+    border-color: transparent;
+    box-shadow: 0px 18px 36px 0px rgba(0, 0, 0, 0.05);
+}
+
+.popular .course-item .thumb {
+    width: calc(100% + 2px);
+    height: 278px;
+    margin: -1px;
+    object-fit: cover;
+    border-radius: 12px 12px 0px 0px;
+}
+
+.popular .course-item .info {
+    padding: 16px 22px 22px;
+}
+
+.popular .course-item .rating,
+.popular .course-item .foot,
+.popular .course-item .head {
+    display: flex;
+    align-items: center; /* căn giữa theo trục ngang */
+    justify-content: space-between; /* đẩy các phần tử ra 2 bên */
+}
+
+.popular .course-item .title a {
+    padding-right: 6px;
+    font-weight: 600;
+    font-size: 1.8rem;
+    line-height: 1.67;
+    color: #171100;
+}
+
+.popular .rating .value {
+    margin-left: 6px;
+    color: #fea31b;
+    font-size: 1.6rem;
+    line-height: 1.75;
+}
+
+.popular .course-item .desc {
+    margin-top: 6px;
+    font-size: 1.6rem;
+    line-height: 1.86;
+    color: #5f5b53;
+}
+
+.popular .course-item .foot {
+    margin-top: 12px;
+}
+
+.popular .course-item .price {
+    color: #171100;
+    font-size: 1.8rem;
+    font-weight: 600;
+    line-height: 1.67;
+}
+
+.popular .course-item .book-btn {
+    border: none;
+}
+
+.popular .course-item .book-btn:hover {
+    color: #fff;
+    background: var(--primary-color);
+}
+
+/* Feedback */
+.feedback {
+    margin-top: 135px;
+    padding: 96px 0;
+    background: #2e2100;
+}
+
+.feedback-list {
+    display: flex;
+    overflow: hidden;
+}
+
+.feedback-item {
+    display: flex;
+    flex-shrink: 0;
+    width: 100%;
+}
+
+.feedback-item .avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.feedback-item .info .title {
+    font-family: var(--font-heading);
+    margin-top: 18px;
+    font-weight: 700;
+    font-size: 2.4rem;
+    line-height: 1.42;
+    color: #f7f7f7;
+}
+
+.feedback-item .info .desc {
+    margin-top: 4px;
+    font-size: 1.4rem;
+    line-height: 1.86;
+    color: #bfbcb2;
+}
+
+.feedback-item .dots {
+    display: flex;
+    margin-top: 28px;
+}
+
+.feedback-item .dot {
+    margin-right: 6px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #634700;
+    cursor: pointer; /* pointer: hiển thị bàn tay khi rê chuột vào */
+}
+
+.feedback-item .dot.active {
+    background: #ffb900;
+    cursor: default; /* default: không hiển thị bàn tay khi rê chuột vào */
+}
+
+.feedback-item .content {
+    width: 66%; /* lấy kích thước trên figma 770px / 1170px * 100 = 65,8% (làm tròn 66% ) */
+    margin-left: auto; /* đẩy qua bên phải */
+}
+
+.feedback-item blockquote {
+    margin-left: 30px;
+    font-style: italic;
+    font-size: 2.6rem;
+    line-height: 1.54;
+    color: #fff;
+}
+
+/* Features */
+.features {
+    margin-top: 135px;
+    padding: 65px 0;
+}
+
+.features .body {
+    display: flex;
+    justify-content: space-between;
+}
+
+.features .images {
+    display: flex;
+    gap: 0 30px;
+}
+
+.features .images img {
+    width: 270px;
+    height: 404px;
+    object-fit: cover;
+    border-radius: 16px;
+}
+
+.features img.lower {
+    margin-top: 34px;
+}
+
+.features .content {
+    width: 41%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.features .desc {
+    margin-top: 16px;
+    font-size: 1.6rem;
+    line-height: 1.75;
+    color: #5f5b53;
+}
+
+.features .content .cta-btn {
+    margin-top: 32px;
+    min-width: 137px;
+    color: #fff;
+    background: var(--primary-color);
+}
+
+.features-2nd {
+    margin-top: 70px;
+}
+
+.features-2nd .body {
+    flex-direction: row-reverse; /* row-reverse: đảo ngược lại */
+}
+
+.features-2nd .images img {
+    width: 470px;
+    height: 440px;
+    object-fit: cover;
+}
+
+.features-2nd .content {
+    width: 48%;
+}
+
+/* Blog */
+.blog {
+    margin-top: 135px;
+    padding: 96px 0;
+    background: #fffcf4;
+}
+
+.blog .blog-top {
+    text-align: center;
+}
+
+.blog .blog-top .desc {
+    width: 448px;
+    font-size: 1.6rem;
+    line-height: 1.75;
+    color: #696262;
+    margin: 16px auto auto;
+}
+
+.blog .blog-list {
+    display: flex;
+    margin-top: 55px;
+    gap: 30px;
+    overflow: hidden; /* các item nào bị tràn ra ngoài sẽ bị ẩn đi */
+}
+
+.blog .item {
+    flex-shrink: 0; /* (áp dụng cho phần trang) các item không bị nén lại mà sẽ hiển thị kích thước khi đã chia cột */
+    width: calc(33.33% - 20px); /* đảm bảo khoảng cách các item bằng nhau */
+    background: #fff;
+    border-radius: 16px;
+}
+
+.blog .item:hover {
+    box-shadow: 0px 16px 32px 0px rgba(0, 0, 0, 0.05);
+}
+
+.blog .item .thumb {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 16px 16px 0px 0px;
+}
+
+.blog .item .info {
+    padding: 20px 20px 28px;
+}
+
+.blog .item .date {
+    position: relative;
+    display: inline-flex; /* inline-flex : nội dung sẽ rộng bằng đúng thẻ cha của nó */
+    align-items: center;
+    font-size: 1.4rem;
+    line-height: 1.86;
+    color: #5f5b53;
+    padding-bottom: 12px;
+}
+
+.blog .item .date::before {
+    /* tạo ra icon phía trước ::before gọi là thẻ giả */
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    margin-right: 4px;
+}
+
+.blog .item .date::after {
+    /* làm thanh ngang, khi nội dung dài ra thì thanh ngang sẽ dài ra thêm 1 đoạn 27px*/
+    position: absolute;
+    left: 0;
+    right: -27px;
+    bottom: 0;
+    content: "";
+    display: inline-block;
+    height: 1px;
+    background: #e2dfda;
+    border-radius: 0.5px;
+}
+
+.blog .item .title a {
+    display: inline-block;
+    margin: 12px 0;
+    font-weight: 600;
+    font-size: 1.6rem;
+    line-height: 1.75;
+    color: #171100;
+}
+
+.blog .info .btn {
+    font-size: 1.4rem;
+}
+
+.blog .info .btn:hover {
+    background: var(--primary-color);
+}
+
+.blog .dots {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin-top: 38px;
+}
+
+.blog .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #5f5b53;
+    cursor: pointer;
+}
+
+.blog .dot.active {
+    cursor: default;
+    background: var(--primary-color);
+}
+
+/* Footer */
+.footer {
+    padding: 96px 135px 0;
+    background: #2e2100;
+}
+
+.footer .row {
+    display: flex;
+    padding-bottom: 38px;
+    border-bottom: 1px solid #59554b;
+}
+
+/* chiều rộng chia đều cho các cột */
+.footer .row .column {
+    width: 21.6%;
+}
+
+/* chiều rộng cho cột đầu tiên */
+.footer .row .column:first-child {
+    width: 35%;
+}
+
+.footer .desc {
+    margin-top: 18px;
+    max-width: 267px;
+    font-size: 1.4rem;
+    line-height: 1.86;
+    color: #bfbcb2;
+}
+
+.footer .socials {
+    display: flex;
+    gap: 18px;
+    margin-top: 18px;
+}
+
+.footer .title {
+    padding: 0 48px 14px 0;
+    display: inline-block;
+    font-weight: 600;
+    font-size: 1.6rem;
+    line-height: 1.75;
+    color: #fff;
+    border-bottom: 1px solid #59554b;
+}
+
+.footer .list {
+    margin-top: 28px;
+}
+
+.footer .list a {
+    display: inline-block;
+    margin-bottom: 12px;
+    font-size: 1.4rem;
+    line-height: 1.86;
+    color: #bfbcb2;
+}
+
+.footer .list li:last-child a {
+    margin-bottom: 0;
+}
+
+.footer .list strong {
+    font-weight: 600;
+    color: #fff;
+}
+
+.footer .copyright {
+    padding: 28px 0;
+}
+
+.footer .copyright p {
+    font-size: 1.4rem;
+    line-height: 1.8;
+    text-align: center;
+    color: #807d74;
+}
