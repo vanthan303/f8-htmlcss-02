@@ -611,7 +611,7 @@ a {
 }
 
 .blog .item {
-    flex-shrink: 0; /* (áp dụng cho phần trang) các item không bị nén lại mà sẽ hiển thị kích thước khi đã chia cột */
+    flex-shrink: 0; /* (áp dụng cho phân trang) các item không bị nén lại mà sẽ hiển thị kích thước khi đã chia cột */
     width: calc(33.33% - 20px); /* đảm bảo khoảng cách các item bằng nhau */
     background: #fff;
     border-radius: 16px;
